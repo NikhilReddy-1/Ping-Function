@@ -8,6 +8,18 @@
 #include<arpa/inet.h>
 
 
+char *dns_lookup(char *hostname)
+{
+	struct hostent *host_info;
+	struct in_addr *address;
+	
+	host_info = gethostbyname(hostname);
+	address = (struct in_addr*)(host_info->h_addr);
+	
+	return(inet_ntoa(*address));
+}
+
+
 int main(int argc, char *argv[])
 {
 	
@@ -22,11 +34,8 @@ int main(int argc, char *argv[])
 	
 	char *hostname = argv[1];
 	
-	host_info = gethostbyname(hostname);
-	address = (struct in_addr*)(host_info->h_addr);
+	char *h_address = dns_lookup(hostname);
 	
-	printf("%s has address : %s",hostname, inet_ntoa(*address));
-	
-	
+	printf("%s",h_address);
 	
 }
