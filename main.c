@@ -22,20 +22,26 @@ char *dns_lookup(char *hostname)
 
 int main(int argc, char *argv[])
 {
-	
-	struct hostent *host_info;
-	struct in_addr *address;
-	
-	
+	int raw_sock;
+		
 	if(argc != 2){
 		printf("Too few arguments\n");
 		return(0);
 	}
-	
 	char *hostname = argv[1];
 	
-	char *h_address = dns_lookup(hostname);
 	
+	if((raw_sock = socket(AF_INET,SOCK_RAW,IPPROTO_ICMP)) < 0)
+	{
+		perror("Socket did not open!\n");
+		exit(1);
+	}
+	
+	
+	char *h_address = dns_lookup(hostname);
 	printf("%s",h_address);
 	
 }
+
+
+
